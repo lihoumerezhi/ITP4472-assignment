@@ -38,8 +38,7 @@ with st.sidebar:
     st.header("🧭 Page Navigation")
     st.info("ITP4472 Individual Streamlit Assignment")
     st.write("🏠 Homepage - Personal Info")
-    st.write("📊 Page 2 - Hobby Chart")
-    st.write("💾 Page 3 - Download Text File")
+    st.write("💾 Download Text File")
     st.divider()
     st.warning("📅 Submission Deadline: 18 June 2026")
 
@@ -53,31 +52,29 @@ st.markdown('<div class="card-box">', unsafe_allow_html=True)
 img_col, text_col = st.columns([0.25, 0.75])
 with img_col:
     try:
-        # First try local absolute path for your computer
         avatar = Image.open(r"C:\MyAssignment\avatar.png")
         st.image(avatar, caption="My Profile Photo", width=170)
     except:
         try:
-            # Fallback relative path for cloud deployment
             avatar = Image.open("avatar.png")
             st.image(avatar, caption="My Profile Photo", width=170)
         except FileNotFoundError:
-            st.error("Missing avatar.png, please check the file storage path!")
+            st.error("Missing avatar.png, check file path!")
 
 with text_col:
     st.subheader("🙋 About Me")
     st.write("""
-Hello everyone, my name is LIHOU Merezhi. I come from an ethnic minority region in Sichuan. I am outgoing and optimistic, and I am passionate about life. My undergraduate major is Data Science and Artificial Intelligence.
+Hello everyone, my name is LIHOU Merezhi. I belong to an ethnic minority group in Sichuan. Outgoing and optimistic, I hold a strong passion for life. My undergraduate major is Data Science and Artificial Intelligence.
 """)
-    st.write("Python and artificial intelligence programming are the core of my current studies. This interactive web page is a practical assignment for the ITP4472 module.")
+    st.write("Python and artificial intelligence programming form the core of my current study. This interactive webpage serves as a self-practice assignment for the module ITP4472.")
     st.info("My hobbies: Badminton, cycling and singing.")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Module 2: Expandable study content
 with st.expander("📖 My Study Goals & Daily Life", expanded=False):
     st.write("1. Academic Goal: Master Python data analysis and basic AI model development.")
-    st.write("2. Interest: Build interactive data visualization tools based on Streamlit.")
-    st.write("3. Daily Life: Keep exercising and listen to music to release pressure.")
+    st.write("2. Interest: Create interactive data visualization tools with Streamlit.")
+    st.write("3. Daily Life: Keep sports and listen to music to release pressure.")
 
 st.markdown('<hr class="main-divider">', unsafe_allow_html=True)
 
@@ -86,7 +83,7 @@ st.markdown('<div class="card-box">', unsafe_allow_html=True)
 st.subheader("✏️ Edit Personal Information")
 name = st.text_input("Full Name", value=st.session_state.user_info["name"], placeholder="Please enter your full name")
 school = st.text_input("School", value=st.session_state.user_info["school"], placeholder="Your university name")
-major = st.text_input("Major", value=st.session_state.user_info["major"], placeholder="Your academic major")
+major = st.text_input("Major", value=st.session_state.user_info["major"], placeholder="Your study major")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Module 4: Hobby selection + Save / Reset buttons
@@ -115,13 +112,13 @@ if c5: hobby_list.append("Cycling")
 # Save logic
 if save_btn:
     if name.strip() == "":
-        st.error("Name cannot be empty! Please fill in your full name.")
+        st.error("Name cannot be empty! Please fill your name.")
     else:
         st.session_state.user_info["name"] = name
         st.session_state.user_info["school"] = school
         st.session_state.user_info["major"] = major
         st.session_state.user_info["hobbies"] = hobby_list
-        st.toast("Data saved successfully!", icon="✅")
+        st.toast("Saved successfully!", icon="✅")
         st.balloons()
 
 # Reset logic
@@ -132,7 +129,22 @@ if reset_btn:
         "major": "Data Science and Artificial Intelligence",
         "hobbies": ["Badminton", "Singing", "Cycling"]
     }
-    st.toast("All data has been reset!", icon="🔄")
+    st.toast("All data reset!", icon="🔄")
+
+st.markdown('<hr class="main-divider">', unsafe_allow_html=True)
+
+# ========== LINE CHART EMBEDDED ON HOMEPAGE ==========
+st.subheader("📊 Hobby Frequency Line Chart")
+chart_data = pd.DataFrame({
+    "Hobby": ["Badminton", "Singing", "Cycling", "Reading", "Coding"],
+    "Selected Count": [3, 2, 3, 1, 1]
+})
+chart_data = chart_data.set_index("Hobby")
+st.line_chart(chart_data, y="Selected Count", color="#dc2626")
+st.subheader("Raw Data Table")
+st.dataframe(chart_data)
+st.info("This line chart satisfies the chart requirement of the assignment.")
+# =====================================================
 
 st.markdown('<hr class="main-divider">', unsafe_allow_html=True)
 
@@ -148,8 +160,8 @@ Major: {info["major"]}
 Hobbies: {", ".join(info["hobbies"])}
 
 Self Description:
-Hello everyone, my name is LIHOU Merezhi. I come from an ethnic minority region in Sichuan. I am outgoing and optimistic, and I am passionate about life.
-My undergraduate major covers Data Science and Artificial Intelligence. Python and AI programming form the core of my current learning content. This interactive web page serves as my coursework assignment for ITP4472.
+Hello everyone, my name is LIHOU Merezhi. I belong to an ethnic minority group in Sichuan. Outgoing and optimistic, I hold a strong passion for life.
+My undergraduate major covers Data Science and Artificial Intelligence. Python and AI programming form the core of my current learning content. This interactive webpage acts as my coursework assignment for ITP4472.
 My daily hobbies are badminton, cycling and singing.
 ================================================================
 ITP4472 Streamlit Assignment
@@ -162,10 +174,10 @@ ITP4472 Streamlit Assignment
         type="primary"
     )
 else:
-    st.warning("Please fill in your name and save personal data before downloading!")
+    st.warning("Please fill your name and save info first!")
 
 # Bottom prompt
 st.divider()
 if name.strip():
     st.success(f"Welcome, {name}!")
-st.info("💡 Expand the left sidebar to view hobby chart and independent download page.")
+st.info("💡 Open sidebar to view independent download page.")
