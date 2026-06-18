@@ -1,32 +1,34 @@
 import streamlit as st
 
-st.set_page_config(page_title="Download File Page", page_icon="💾")
-st.title("💾 Download Your Personal Introduction File")
-st.divider()
+st.set_page_config(page_title="Independent Download Page", layout="wide")
+st.title("📄 Independent Introduction Download Page")
 
-if "user_info" not in st.session_state or st.session_state.user_info["name"] == "":
-    st.error("You haven’t saved your personal information yet! Return to the main page to fill in details.")
-else:
-    info = st.session_state.user_info
-    # 拼接文本内容
-    file_text = f"""
-==================== PERSONAL INTRODUCTION ====================
-Name: {info["name"]}
-Major: {info["major"]}
-Age: {info["age"]}
-Gender: {info["gender"]}
-Hobbies: {", ".join(info["hobbies"]) if info["hobbies"] else "None"}
+user_data = st.session_state.user_info
 
-Self Description:
-{info["self_desc"]}
-===============================================================
-Assignment: ITP4472 Streamlit Self Introduction
+full_text = f"""
+==================== FULL PERSONAL INTRODUCTION ====================
+Full Name: {user_data["name"]}
+University: {user_data["school"]}
+Major: {user_data["major"]}
+Selected Hobbies: {", ".join(user_data["hobbies"])}
+
+Self Introduction Content:
+Hello everyone, my name is LIHOU Merezhi. I am an undergraduate student majoring in Data Science and Artificial Intelligence.
+This multi-page Streamlit website is my complete submission for the ITP4472 course assignment.
+My regular leisure activities include badminton, cycling and singing.
+====================================================================
+ITP4472 Streamlit Assignment Submission
 """
-    # 8. Download files 下载功能
-    st.download_button(
-        label="Download TXT Introduction File",
-        data=file_text,
-        file_name=f"{info['name']}_Self_Introduction.txt",
-        mime="text/plain"
-    )
-    st.toast("File ready to download!", icon="📁")
+
+st.subheader("Text Preview Area")
+st.text_area("Preview Content", full_text, height=350, disabled=True)
+
+st.download_button(
+    label="Download Complete Introduction TXT File",
+    data=full_text,
+    file_name=f"{user_data['name']}_Full_Intro.txt",
+    mime="text/plain",
+    type="primary"
+)
+
+st.warning("Return to homepage and click Save to synchronize updated personal information.")
